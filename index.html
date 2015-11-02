@@ -5,15 +5,36 @@
     <title>Hello World!</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
+<!--     <h1>Hello World!</h1>
     We are using Node.js <script>document.write(process.version)</script>
-    and Electron <script>document.write(process.versions['electron'])</script>.
+    and Electron <script>document.write(process.versions['electron'])</script>. -->
     <div id="tiny"></div>
 
     <script src="mithril.min.js"></script>
+    <script src="request_wrapper.js"></script>
     <script>
-      var p = m("p", "Hello Middle-earth!");
-      m.render(document.getElementById("tiny"), p)
+      var Request = {
+        postResponse: requestWrapper({method:"GET", url: "https://www.reddit.com/r/Weakpots/comments/3qzdvt/.json?sort=new&depth=1"}),
+        view: function(){
+          return [
+            m("h3", "Recent Posts"),
+            drawButton(m("button", {onclick: this.postResponse.go}, "Load comments")),
+            drawTable(),
+          ];
+          function drawButton(regularButton){
+            if(Request.postResponse.loading){return m("button.dull", "Loading comments...");}
+            return regularButton;
+          }
+          function drawTable(){
+            if(!Request.postResponse.success){ return; }
+            return m("table", Request.postResponse.data[1].data.children.map(function(commentObj){
+              return m("tr", [m("td", commentObj.data.body)]);
+            }));
+          }
+        }
+      }
+
+      m.module(document.getElementById("tiny"), Request)
     </script>
   </body>
 </html>
