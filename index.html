@@ -17,7 +17,7 @@
         postResponse: requestWrapper({method:"GET", url: "https://www.reddit.com/r/Weakpots/comments/3qzdvt/.json?sort=new&depth=1"}),
         view: function(){
           return [
-            m("h3", "Recent Posts"),
+            m("h3", "Recent Comments"),
             drawButton(m("button", {onclick: this.postResponse.go}, "Load comments")),
             drawTable(),
           ];
