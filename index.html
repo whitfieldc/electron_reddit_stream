@@ -8,5 +8,12 @@
     <h1>Hello World!</h1>
     We are using Node.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.
+    <div id="tiny"></div>
+
+    <script src="mithril.min.js"></script>
+    <script>
+      var p = m("p", "Hello Middle-earth!");
+      m.render(document.getElementById("tiny"), p)
+    </script>
   </body>
 </html>
