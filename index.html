@@ -14,7 +14,7 @@
     <script src="request_wrapper.js"></script>
     <script>
       var Request = {
-        postResponse: requestWrapper({method:"GET", url: "https://www.reddit.com/r/Weakpots/comments/3qzdvt/.json?sort=new&depth=1"}),
+        postResponse: requestWrapper({method:"GET", url: "https://www.reddit.com/r/nfl/comments/3raesa/.json?sort=new&depth=1&limit=15"}),
         view: function(){
           return [
             m("h3", "Recent Comments"),
@@ -28,7 +28,7 @@
           function drawTable(){
             if(!Request.postResponse.success){ return; }
             return m("table", Request.postResponse.data[1].data.children.map(function(commentObj){
-              return m("tr", [m("td", commentObj.data.body)]);
+              return m("tr", [m("td", commentObj.data.body), m("td", commentObj.data.created), m("td", commentObj.data.author)]);
             }));
           }
         }
