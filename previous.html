@@ -1,0 +1,34 @@
+    <script>
+      var Request = {
+        postResponse: requestWrapper({method:"GET", url: "https://www.reddit.com/r/AskReddit/comments/3rgh2w/.json?sort=new&depth=1&limit=15"}),
+        view: function(){
+          return [
+            m("h3", "Recent Comments"),
+            drawButton(m("button", {onclick: this.postResponse.go}, "Load comments")),
+            drawTable(),
+          ];
+          function drawButton(regularButton){
+            if(Request.postResponse.loading){return m("button.dull", "Loading comments...");}
+            return regularButton;
+          }
+          function drawTable(){
+            if(!Request.postResponse.success){ return; }
+            return m("table", Request.postResponse.data[1].data.children.map(function(commentObj){
+              return m("tr", [m("td", commentObj.data.body), m("td", commentObj.data.created), m("td", commentObj.data.author)]);
+            }));
+          }
+        }
+      }
+
+      m.module(document.getElementById("tiny"), Request)
+      function redrawForever(){
+          // do whatever you like here
+          console.log('fetching...');
+          Request.postResponse.go();
+          m.redraw();
+          console.log('fetched');
+          setTimeout(redrawForever, 100000);
+      }
+
+      redrawForever();
+    </script>
