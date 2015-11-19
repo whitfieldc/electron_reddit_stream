@@ -8,8 +8,8 @@ thread.Thread = function(data){
   this.getRequest = function(){
     currentThread = currentThread;
     currentThread.loading = true; currentThread.success = currentThread.failed = false;
-    currentThread.opts = {method:"GET", url:"http://maru-todo.herokuapp.com/tasks"}
-    // currentThread.opts = {method:"GET", url:currentThread.urlPath()}
+    // currentThread.opts = {method:"GET", url:"http://maru-todo.herokuapp.com/tasks"}
+    currentThread.opts = {method:"GET", url:currentThread.urlPath()}
     // console.log('in GO')
     // console.log(currentThread.urlPath())
     // console.log(currentThread)
