@@ -5,16 +5,25 @@ thread.Thread = function(data){
   currentThread = this
   currentThread.data = null
   currentThread.success = currentThread.loading = currentThread.failed = false;
+
+  this.userAgentConfig = function(xhr) {
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:8000");
+    xhr.setRequestHeader("UserAgent", "web:com.firebaseapp.multistream:v0.0.1 (by /u/retiredhipster");
+  };
+  // User-Agent: android:com.example.myredditapp:v1.2.3 (by /u/kemitche)
+  // m.request({method: "POST", url: "/foo", config: xhrConfig});
   this.getRequest = function(){
     currentThread = currentThread;
     currentThread.loading = true; currentThread.success = currentThread.failed = false;
     // currentThread.opts = {method:"GET", url:"http://maru-todo.herokuapp.com/tasks"}
-    currentThread.opts = {method:"GET", url:currentThread.urlPath()}
+    currentThread.opts = {method:"GET", url:currentThread.urlPath(), config: currentThread.userAgentConfig}
     // console.log('in GO')
     // console.log(currentThread.urlPath())
     // console.log(currentThread)
     m.request(currentThread.opts)
     .then(function(mydata){
+      console.log(mydata);
       currentThread.success = true; currentThread.failed = currentThread.loading = false;
       currentThread.data = mydata;
       m.redraw();
@@ -33,7 +42,7 @@ thread.vm = (function(){
 
     vm.startThread = function(){
       if (vm.threadSubString()) {
-        fullUrl = "http://reddit.com/r/" + vm.threadSubString() + ".json?sort=new&depth=1&limit=15"
+        fullUrl = "http://www.reddit.com/r/" + vm.threadSubString() + ".json?sort=new&depth=1&limit=15"
         var newThread = new thread.Thread({urlPath: fullUrl});
         console.log('in startThread')
         console.log(fullUrl)
