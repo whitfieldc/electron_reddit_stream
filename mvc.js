@@ -13,6 +13,13 @@ thread.Thread = function(data){
   };
   // User-Agent: android:com.example.myredditapp:v1.2.3 (by /u/kemitche)
   // m.request({method: "POST", url: "/foo", config: xhrConfig});
+  this.getForever = function(){
+    console.log('fetching');
+    currentThread.getRequest();
+    console.log('fetched');
+    setTimeout(currentThread.getForever, 30000);
+
+  }
   this.getRequest = function(){
     currentThread = currentThread;
     currentThread.loading = true; currentThread.success = currentThread.failed = false;
@@ -47,7 +54,7 @@ thread.vm = (function(){
         console.log('in startThread')
         console.log(fullUrl)
         console.log(newThread)
-        newThread.getRequest();
+        newThread.getForever();
         vm.list.push(newThread);
         vm.threadSubString("");
       }
